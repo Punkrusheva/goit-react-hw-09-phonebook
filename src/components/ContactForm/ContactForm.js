@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 //import { connect } from "react-redux";
 //import { contactsOperations } from "../../redux/phoneBook/index";
 import shortid from 'shortid';
 import styles from './ContactForm.module.css';
 import { CSSTransition } from "react-transition-group";
 import "../../stylesheets/animation.css";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+//import { toast } from 'react-toastify';
+//import 'react-toastify/dist/ReactToastify.css';
 
 export default function ContactForm() {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [name, setName] = useState(() => {
+    return JSON.parse(window.localStorage.getItem('name')) ?? '';
+  });
+  const [number, setNumber] = useState(() => {
+    return JSON.parse(window.localStorage.getItem('number')) ?? '';
+  });
   
   const nameInputId = shortid.generate();
   const numberInputId = shortid.generate();
@@ -32,6 +36,15 @@ export default function ContactForm() {
     }
   };
 
+  useEffect(() => {
+    console.log('name useEffect');
+    window.localStorage.setItem('name', JSON.stringify(name));
+  }, [name]);
+
+   useEffect(() => {
+    console.log('number useEffect');
+    window.localStorage.setItem('number', JSON.stringify(number));
+  }, [number]);
   /*const handleSubmit = e => {
     e.preventDefault();
 
@@ -60,7 +73,7 @@ return (<>
             </CSSTransition>
           
        
-      <form className={styles.box}  >{/*onSubmit={handleSubmit}*/}
+      <form className={styles.box}  autoComplete="off">{/*onSubmit={handleSubmit}*/}
        <label htmlFor={nameInputId} className={styles.name}>
           Name
           <input
