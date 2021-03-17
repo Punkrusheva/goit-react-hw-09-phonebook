@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 15px;
+  font-style: italic;
+  margin-right: 5px;
+}
+
+.button {
+  padding: 2px;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.svg {
+  width: 18px;
+  height: auto;
+}

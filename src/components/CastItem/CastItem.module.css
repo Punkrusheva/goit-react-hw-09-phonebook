@@ -1,0 +1,10 @@
+.img {
+  width: 100px;
+  height: 150px;
+  margin-bottom: 10px;
+  background-image: url(../../images/404.png);
+}
+
+.character {
+  margin-bottom: 10px;
+}

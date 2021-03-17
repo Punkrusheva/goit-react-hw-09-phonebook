@@ -1,0 +1,16 @@
+.navMenu {
+  display: flex;
+  list-style: none;
+  width: 120px;
+  justify-content: space-between;
+}
+
+.navLink {
+  color: black;
+  font-weight: 400;
+}
+
+.navLinkActive {
+  color: brown;
+  font-weight: 600;
+}

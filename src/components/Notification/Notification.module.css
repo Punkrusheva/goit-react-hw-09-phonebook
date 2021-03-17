@@ -1,0 +1,41 @@
+.overlay {
+  position: relative;
+}
+
+.notification {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #f44336;
+  color: #fff;
+  border-radius: 2px;
+  font-size: 12px;
+  padding: 7px 20px;
+  margin: 0;
+
+  @media screen and (min-width: 601px) {
+    padding: 10px 40px;
+  }
+}
+
+.notificationFade-enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.notificationFade-enter-active {
+  transform: translateX(0);
+  transition: all 250ms linear;
+  opacity: 1;
+}
+
+.notificationFade-exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.notificationFade-exit-active {
+  transform: translateX(100%);
+  transition: all 250ms linear;
+  opacity: 0;
+}
