@@ -1,14 +1,96 @@
-import React, { Component } from 'react';
-import { connect } from "react-redux";
-import { contactsOperations } from "../../redux/phoneBook/index";
+import { useState } from 'react';
+//import { connect } from "react-redux";
+//import { contactsOperations } from "../../redux/phoneBook/index";
 import shortid from 'shortid';
 import styles from './ContactForm.module.css';
 import { CSSTransition } from "react-transition-group";
 import "../../stylesheets/animation.css";
 import { toast } from 'react-toastify';
- import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 
-class ContactForm extends Component {
+export default function ContactForm() {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  
+  const nameInputId = shortid.generate();
+  const numberInputId = shortid.generate();
+
+  const handleChange = event => {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      
+      case 'number':
+        setNumber(value);
+        break;
+      
+      default:
+        return;
+    }
+  };
+
+  /*const handleSubmit = e => {
+    e.preventDefault();
+
+    if (name === '') {toast.error('Contact details empty');
+    } else { 
+      if (this.props.contacts.items.find(({ name }) => name === this.state.name)) {
+        toast.error('Contact is already exist');
+      } else {
+        this.props.onSubmit(this.state);
+      };
+      reset();
+    };
+  };
+    
+  const reset = () => {
+    this.setState({ name: '', number: '' });
+  };*/
+
+return (<>
+        <CSSTransition
+            in={true} appear={true}
+            classNames='logo'
+            timeout={500}
+          unmountOnExit>
+          <h1 className={styles.logo}>Phonebook</h1>
+            </CSSTransition>
+          
+       
+      <form className={styles.box}  >{/*onSubmit={handleSubmit}*/}
+       <label htmlFor={nameInputId} className={styles.name}>
+          Name
+          <input
+            type='text'
+            name='name'
+            id={nameInputId}
+            value={name}
+            onChange={handleChange}
+            className={styles.input}
+            placeholder='Enter contact name' />
+        </label> 
+       <label htmlFor={numberInputId} className={styles.number}>
+          Number
+          <input
+            type='text'
+            name='number'
+            id={numberInputId}
+            value={number}
+            onChange={handleChange}
+            className={styles.input}
+            placeholder='Enter contact number' />
+          </label>
+            <button type='submit' className={styles.button}>
+              Add contact
+            </button>
+        </form>
+        </>)
+};
+
+/*class OldContactForm extends Component {
   state = {
     name: '',
     number: '',
@@ -92,4 +174,4 @@ const mapDispatchToProps = dispatch => ({
   onSubmit: (name, number) => { dispatch(contactsOperations.addContact(name, number)) },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);*/

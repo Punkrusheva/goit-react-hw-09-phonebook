@@ -1,7 +1,12 @@
+//import { useState } from 'react';
 import React from 'react';
 import styles from './ContactFilter.module.css';
 import { connect } from "react-redux";
 import { contactsSelectors, contactsActions } from "../../redux/phoneBook";
+
+/*export default function ContactFilter() {
+  const [name, setName] = useState('');
+}*/
 
 const ContactFilter = ({ value, onChange }) => (
           <label
