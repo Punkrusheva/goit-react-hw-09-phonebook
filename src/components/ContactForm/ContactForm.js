@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+//import { useState, useEffect } from 'react';
 //import { connect } from "react-redux";
 //import { contactsOperations } from "../../redux/phoneBook/index";
 import shortid from 'shortid';
@@ -7,20 +7,18 @@ import { CSSTransition } from "react-transition-group";
 import "../../stylesheets/animation.css";
 //import { toast } from 'react-toastify';
 //import 'react-toastify/dist/ReactToastify.css';
+import useLocalStorage from '../../hooks/useLocalStorage'
 
-export default function ContactForm() {
-  const [name, setName] = useState(() => {
-    return JSON.parse(window.localStorage.getItem('name')) ?? '';
-  });
-  const [number, setNumber] = useState(() => {
-    return JSON.parse(window.localStorage.getItem('number')) ?? '';
-  });
+export default
+  function ContactForm() {
+  const [name, setName] = useLocalStorage('name', '');
+  const [number, setNumber] = useLocalStorage('number', '');
   
   const nameInputId = shortid.generate();
   const numberInputId = shortid.generate();
 
-  const handleChange = event => {
-    const { name, value } = event.target;
+  const handleChange = e => {
+    const { name, value } = e.target;
 
     switch (name) {
       case 'name':
@@ -35,35 +33,25 @@ export default function ContactForm() {
         return;
     }
   };
-
-  useEffect(() => {
-    console.log('name useEffect');
-    window.localStorage.setItem('name', JSON.stringify(name));
-  }, [name]);
-
-   useEffect(() => {
-    console.log('number useEffect');
-    window.localStorage.setItem('number', JSON.stringify(number));
-  }, [number]);
+  
   /*const handleSubmit = e => {
     e.preventDefault();
-
+    
     if (name === '') {toast.error('Contact details empty');
-    } else { 
-      if (this.props.contacts.items.find(({ name }) => name === this.state.name)) {
-        toast.error('Contact is already exist');
-      } else {
+    } //if (this.props.contacts.items.find(({ name }) => name === this.state.name)) {
+        //toast.error('Contact is already exist');
+    //} 
+      else {
         this.props.onSubmit(this.state);
       };
       reset();
-    };
   };
     
   const reset = () => {
     this.setState({ name: '', number: '' });
-  };*/
-
-return (<>
+    };*/
+    
+    return (<>
         <CSSTransition
             in={true} appear={true}
             classNames='logo'
@@ -73,7 +61,8 @@ return (<>
             </CSSTransition>
           
        
-      <form className={styles.box}  autoComplete="off">{/*onSubmit={handleSubmit}*/}
+  <form className={styles.box} autoComplete="off">
+    {/*onSubmit={handleSubmit}*/}
        <label htmlFor={nameInputId} className={styles.name}>
           Name
           <input
