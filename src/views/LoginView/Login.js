@@ -1,16 +1,18 @@
-//import { useState, useEffect } from 'react';
+import {
+    useState,
+    //useEffect
+} from 'react';
 //import { connect } from 'react-redux';
 //import { authOperations } from '../../redux/auth';
 import shortid from 'shortid';
 import styles from "./Login.module.css";
-//import { toast } from 'react-toastify';
-//import 'react-toastify/dist/ReactToastify.css';
-import useLocalStorage from '../../hooks/useLocalStorage';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+//import useLocalStorage from '../../hooks/useLocalStorage';
 
-export default
-    function Login() {
-    const [email, setEmail] = useLocalStorage('email', '');
-    const [password, setPassword] = useLocalStorage('password', '');
+export default function Login({ onLogin }) {
+    const [email, setEmail] = useState('');// useLocalStorage('email', '');
+    const [password, setPassword] = useState('');//useLocalStorage('password', '');
           
     const emailInputId = shortid.generate();
     const passwordInputId = shortid.generate();
@@ -32,11 +34,28 @@ export default
     }
     };
     
+    const handleSubmit = e => {
+        e.preventDefault();
+
+        if (email === '') { toast.error('Email is empty'); }
+        if (password.length < 7) { toast.error('Wrong password'); }
+        else {
+            console.log(email, password);
+                //onLogin(email, password);
+        };
+        reset();
+    };
+    
+    const reset = () => {
+        setEmail('');
+        setPassword('');
+  };
+
     return (
         <>
             <h1>Login</h1>
             <form className={styles.box}
-            //onSubmit={this.handleSubmit} 
+            onSubmit={handleSubmit} 
             >
                     <label htmlFor={emailInputId} className={styles.email}>
                         E-mail

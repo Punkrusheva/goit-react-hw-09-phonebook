@@ -1,18 +1,20 @@
-//import { useState, useEffect } from 'react';
+import {
+    useState,
+    //useEffect
+} from 'react';
 //import { connect } from "react-redux";
 //import { contactsOperations } from "../../redux/phoneBook/index";
 import shortid from 'shortid';
 import styles from './ContactForm.module.css';
 import { CSSTransition } from "react-transition-group";
 import "../../stylesheets/animation.css";
-//import { toast } from 'react-toastify';
-//import 'react-toastify/dist/ReactToastify.css';
-import useLocalStorage from '../../hooks/useLocalStorage';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+//import useLocalStorage from '../../hooks/useLocalStorage';
 
-export default
-  function ContactForm() {
-  const [name, setName] = useLocalStorage('name', '');
-  const [number, setNumber] = useLocalStorage('number', '');
+export default function ContactForm({contacts, onSubmit}) {
+  const [name, setName] = useState('');//useLocalStorage('name', '');
+  const [number, setNumber] = useState('');//useLocalStorage('number', '');
   
   const nameInputId = shortid.generate();
   const numberInputId = shortid.generate();
@@ -34,22 +36,24 @@ export default
     }
   };
   
-  /*const handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
     
     if (name === '') {toast.error('Contact details empty');
-    } //if (this.props.contacts.items.find(({ name }) => name === this.state.name)) {
-        //toast.error('Contact is already exist');
-    //} 
-      else {
-        this.props.onSubmit(this.state);
+    } //if (contacts.items.find(({ name }) => name === contacts.items.name)) {
+       // toast.error('Contact is already exist');
+   // } 
+    else {
+      console.log(name, number);
+        //onSubmit();
       };
       reset();
   };
     
   const reset = () => {
-    this.setState({ name: '', number: '' });
-    };*/
+    setName('');
+    setNumber('');
+    };
     
     return (<>
         <CSSTransition
@@ -61,8 +65,10 @@ export default
             </CSSTransition>
           
        
-  <form className={styles.box} autoComplete="off">
-    {/*onSubmit={handleSubmit}*/}
+      <form className={styles.box}
+        onSubmit={handleSubmit}
+        autoComplete="off">
+        
        <label htmlFor={nameInputId} className={styles.name}>
           Name
           <input

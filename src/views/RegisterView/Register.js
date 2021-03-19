@@ -1,17 +1,19 @@
-//import { useState, useEffect } from 'react';
+import {
+    useState,
+    //useEffect
+} from 'react';
 //import { connect } from 'react-redux';
 //import { authOperations } from '../../redux/auth';
 import shortid from 'shortid';
 import styles from "./Register.module.css";
-//import { toast } from 'react-toastify';
-//import 'react-toastify/dist/ReactToastify.css';
-import useLocalStorage from '../../hooks/useLocalStorage';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+//import useLocalStorage from '../../hooks/useLocalStorage';
 
-export default
-    function Register() {
-    const [name, setName] = useLocalStorage('name', '');
-    const [email, setEmail] = useLocalStorage('email', '');
-    const [password, setPassword] = useLocalStorage('password', '');
+export default function Register({onRegister}) {
+    const [name, setName] = useState('');//useLocalStorage('name', '');
+    const [email, setEmail] = useState('');//useLocalStorage('email', '');
+    const [password, setPassword] = useState('');//useLocalStorage('password', '');
           
     const nameInputId = shortid.generate();
     const emailInputId = shortid.generate();
@@ -38,11 +40,30 @@ export default
     }
     };
     
+    const handleSubmit = e => {
+        e.preventDefault();
+
+        if (name === '') {toast.error('Name is empty');}
+        if (email === '') { toast.error('Email is empty'); }
+        if (password.length < 7) { toast.error('Wrong password'); }
+        else {
+            console.log(name, email, password);
+            //onRegister(this.state);
+        };
+        reset();
+    };
+    
+    const reset = () => {
+        setName('');
+        setEmail('');
+        setPassword('');
+  };
+
     return (
         <>
                     <h1>Registration</h1>
             <form className={styles.box}
-                //onSubmit={handleSubmit} 
+                onSubmit={handleSubmit} 
                 autoComplete='off' >
                         <label htmlFor={nameInputId} className={styles.name}>
                             Name
