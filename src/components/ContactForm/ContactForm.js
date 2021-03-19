@@ -7,7 +7,7 @@ import { CSSTransition } from "react-transition-group";
 import "../../stylesheets/animation.css";
 //import { toast } from 'react-toastify';
 //import 'react-toastify/dist/ReactToastify.css';
-import useLocalStorage from '../../hooks/useLocalStorage'
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 export default
   function ContactForm() {

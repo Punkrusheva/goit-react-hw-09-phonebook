@@ -1,11 +1,94 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { authOperations }  from '../../redux/auth';
+//import { useState, useEffect } from 'react';
+//import { connect } from 'react-redux';
+//import { authOperations } from '../../redux/auth';
+import shortid from 'shortid';
 import styles from "./Register.module.css";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+//import { toast } from 'react-toastify';
+//import 'react-toastify/dist/ReactToastify.css';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
-class Register extends Component {
+export default
+    function Register() {
+    const [name, setName] = useLocalStorage('name', '');
+    const [email, setEmail] = useLocalStorage('email', '');
+    const [password, setPassword] = useLocalStorage('password', '');
+          
+    const nameInputId = shortid.generate();
+    const emailInputId = shortid.generate();
+    const passwordInputId = shortid.generate();
+
+    const handleChange = e => {
+    const { name, value } = e.target;
+
+        switch (name) {
+            case 'name':
+                setName(value);
+                break;
+
+            case 'email':
+                setEmail(value);
+                break;
+      
+            case 'password':
+                setPassword(value);
+                break;
+      
+            default:
+                return;
+    }
+    };
+    
+    return (
+        <>
+                    <h1>Registration</h1>
+            <form className={styles.box}
+                //onSubmit={handleSubmit} 
+                autoComplete='off' >
+                        <label htmlFor={nameInputId} className={styles.name}>
+                            Name
+                        <input
+                                type='text'
+                                name='name'
+                                id={nameInputId}
+                                value={name}
+                                onChange={handleChange}
+                                className={styles.input}
+                                placeholder='Enter name'
+                            />
+                        </label>
+                        <label htmlFor={emailInputId} className={styles.email}>
+                            E-mail
+                        <input
+                                type='text'
+                                name='email'
+                                id={emailInputId}
+                                value={email}
+                                onChange={handleChange}
+                                className={styles.input}
+                                placeholder='Enter e-mail'
+                            />
+                        </label>
+                        <label htmlFor={passwordInputId} className={styles.password}>
+                            Password
+                        <input
+                                type='password'
+                                name='password'
+                                id={passwordInputId}
+                                value={password}
+                                onChange={handleChange}
+                                className={styles.input}
+                                placeholder='Enter password'
+                            />
+                        </label>
+                        <button type='submit' className={styles.button}>
+                            Register
+                    </button>
+                    </form>
+                </>
+    )
+};
+
+/*class OldRegister extends Component {
     state = {
     name: '',
     email: '',
@@ -90,4 +173,4 @@ const mapDispatchToProps = {
     onRegister: authOperations.register,
 };
 
-export default connect(null, mapDispatchToProps)(Register);
+//export default connect(null, mapDispatchToProps)(Register);*/
