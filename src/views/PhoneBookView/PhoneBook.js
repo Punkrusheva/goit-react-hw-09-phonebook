@@ -1,20 +1,28 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../../components/ContactsLayout/ContactsLayout';
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import ContactList from '../../components/ContactList/ContactList'
 import ContactForm from '../../components/ContactForm/ContactForm';
 import ContactFilter from '../../components/ContactFilter/ContactFilter';
 import "../../stylesheets/animation.css";
-import Load from "../../components/Loader/Loader";
 import { ToastContainer } from "react-toastify";
 import { contactsOperations } from "../../redux/phoneBook";
 
-class Phonebook extends Component {
-  componentDidMount() {
+/* componentDidMount() {
     this.props.fetchContacts();
   }
 
-  render() {
+const mapDispatchToProps = dispatch => ({
+fetchContacts: () => dispatch(contactsOperations.fetchContacts())
+})*/
+
+export default function Phonebook() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(contactsOperations.fetchContacts());
+}, [dispatch]);
+   
     return (
       <Layout >
         <ContactForm/>
@@ -25,11 +33,3 @@ class Phonebook extends Component {
       </Layout>
     );
   };
-};
-
-
-const mapDispatchToProps = dispatch => ({
-fetchContacts: () => dispatch(contactsOperations.fetchContacts())
-})
-
-export default connect( null, mapDispatchToProps )(Phonebook);

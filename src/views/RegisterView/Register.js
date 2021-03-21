@@ -1,24 +1,27 @@
-import {
-    useState,
-    //useEffect
-} from 'react';
-//import { connect } from 'react-redux';
-//import { authOperations } from '../../redux/auth';
+import {useState} from 'react';
+import { useDispatch } from 'react-redux';
+import { authOperations } from '../../redux/auth';
 import shortid from 'shortid';
 import styles from "./Register.module.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-//import useLocalStorage from '../../hooks/useLocalStorage';
 
-export default function Register({onRegister}) {
-    const [name, setName] = useState('');//useLocalStorage('name', '');
-    const [email, setEmail] = useState('');//useLocalStorage('email', '');
-    const [password, setPassword] = useState('');//useLocalStorage('password', '');
+/*const mapDispatchToProps = {
+    onRegister: authOperations.register,
+};*/
+
+export default function Register() {
+    const dispatch = useDispatch();
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
           
     const nameInputId = shortid.generate();
     const emailInputId = shortid.generate();
     const passwordInputId = shortid.generate();
 
+    //const onRegister = ()=> dispatch(authOperations.register());
+           
     const handleChange = e => {
     const { name, value } = e.target;
 
@@ -43,14 +46,15 @@ export default function Register({onRegister}) {
     const handleSubmit = e => {
         e.preventDefault();
 
-        if (name === '') {toast.error('Name is empty');}
-        if (email === '') { toast.error('Email is empty'); }
-        if (password.length < 7) { toast.error('Wrong password'); }
+        if (name === '') { toast.error('Укажите имя'); }
+        if (email === '') { toast.error('Укажите имейл'); }
+        if (password.length < 7) { toast.error('Проверьте пароль, не меньше 7 символов'); }
         else {
-            console.log(name, email, password);
-            //onRegister(this.state);
-        };
-        reset();
+            dispatch(authOperations.register({ name, email, password }));
+           // console.log({ name: `${name}`, email: `${email}`, password: `${password}`});
+           // onRegister({ name: `${name}`, email: `${email}`, password: `${password}`});
+            };
+           // reset();
     };
     
     const reset = () => {
@@ -108,38 +112,35 @@ export default function Register({onRegister}) {
                 </>
     )
 };
-
-/*class OldRegister extends Component {
+/**class Register extends Component {
     state = {
     name: '',
     email: '',
     password: '',
     };
     
-    componentDidMount(){
-        this.reset();
-    };
-
-    handleChange = ({ target: { name, value } }) => {
-        this.setState({ [name]: value });
-    };
+  handleChange = ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
+  };
 
     handleSubmit = e => {
         e.preventDefault();
         const { name, email, password } = this.state;
-        if (name === '') {toast.error('Name is empty');}
-        if (email === '') { toast.error('Email is empty'); }
-        if (password.length < 7) { toast.error('Wrong password'); }
-        else {
-            this.props.onRegister(this.state);
+        if (name === '') {
+            toast.error('Name is empty');
+        } else {
+            if (email === '') { toast.error('Email is empty'); }
+            else {
+                if (password.length < 7) { toast.error('Wrong password'); }
+                else {
+                        this.props.onRegister(this.state);
+                        this.setState({ name: '', email: '', password: '' });
+                    };
+                };
         };
-        this.reset();
+        
     };
     
-  reset = () => {
-    this.setState({ name: '', email: '', password: ''  });
-  };
-        
     render() {
             return (
                 <>
@@ -185,13 +186,27 @@ export default function Register({onRegister}) {
                             Register
                     </button>
                     </form>
+                    {this.props.isLoadingAuth &&
+                        <Load
+                            type="ThreeDots"
+                            color="#3f51b5"
+                            height={45}
+                            width={45}
+                            timeout={6000}
+                        />}
+                    {this.props.errorReg &&  <AuthNotification/>}
                 </>
             )
         };
     };
 
+const mapStateToProps = state => ({
+    isLoadingAuth: authSelectors.getAuthLoading(state),
+    errorReg: authSelectors.getAuthError(state),
+});
+
 const mapDispatchToProps = {
     onRegister: authOperations.register,
 };
 
-//export default connect(null, mapDispatchToProps)(Register);*/
+export default connect(mapStateToProps, mapDispatchToProps)(Register); */

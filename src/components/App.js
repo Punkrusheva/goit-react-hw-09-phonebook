@@ -1,10 +1,13 @@
-import React, { Component, Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import Layout from "./Layout/Layout";
 import { Switch, Redirect } from "react-router-dom";
 import routes from "../routes";
 import Load from "./Loader/Loader";
-import { authOperations, authSelectors} from "../redux/auth";
-import { connect } from 'react-redux';
+import {
+  authOperations,
+  authSelectors
+} from "../redux/auth";
+import { useDispatch, useSelector } from 'react-redux';
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import { ToastContainer } from "react-toastify";
@@ -16,14 +19,24 @@ const HomePage = lazy(() => import('../views/HomeView/HomePage.js' /*webpackChun
 const PhoneBook = lazy(() => import('../views/PhoneBookView/PhoneBook.js' /*webpackChunkName: 'phone-book' */));
 const Register = lazy(() => import('../views/RegisterView/Register.js' /*webpackChunkName: 'register' */));
 const Login = lazy(() => import('../views/LoginView/Login.js' /*webpackChunkName: 'Login' */));
-
-class App extends Component {
-  componentDidMount() {
+/**componentDidMount() {
     this.props.onGetCurrentUser();
   };
   
-  render() {
-    const { isLoadingAuth, isLoadingContacts, errorContacts, errorAuth} = this.props;
+const mapDispatchToProps = {
+  onGetCurrentUser: authOperations.getCurrentUser
+} */
+export default function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(authOperations.getCurrentUser());
+   }, [dispatch]);
+  
+  const isLoadingAuth= useSelector(authSelectors.getAuthLoading);
+  const isLoadingContacts= useSelector(contactsSelectors.getLoading);
+  const errorContacts= useSelector(contactsSelectors.getError);
+  const errorAuth= useSelector(authSelectors.getAuthError);
     return (
       <Layout>
         <ToastContainer autoClose={2500} />
@@ -35,7 +48,8 @@ class App extends Component {
                         timeout={6000}
                     />}>
           <Switch>
-            <PublicRoute exact path={routes.homePage} component={HomePage} />
+             <PublicRoute exact path={routes.homePage} component={HomePage}/>
+          
             <PrivateRoute
               path={routes.phoneBook}
               component={PhoneBook}
@@ -58,18 +72,4 @@ class App extends Component {
         {errorAuth &&  <AuthNotification/>}
         </Layout>
     )
-  }
 };
-
-const mapStateToProps = state => ({
-  isLoadingAuth: authSelectors.getAuthLoading(state),
-  isLoadingContacts: contactsSelectors.getLoading(state),
-  errorContacts: contactsSelectors.getError(state),
-  errorAuth: authSelectors.getAuthError(state),
-});
-
-const mapDispatchToProps = {
-  onGetCurrentUser: authOperations.getCurrentUser
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);

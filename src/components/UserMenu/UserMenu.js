@@ -1,18 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useCallback} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { authSelectors, authOperations } from '../../redux/auth';
 import styles from "./UserMenu.module.css";
 import Button from 'react-bootstrap/Button';
 import { FiLogOut } from 'react-icons/fi';
-
-const UserMenu = ({ name, onLogout }) => (
-  <div className={styles.container}>
-    <span className={styles.name}>Welcome, {name}</span>
-    <Button className={styles.button} variant="outline-secondary" onClick={onLogout}>
-      <FiLogOut className={styles.svg} fill="white" /></Button>{''}
-    </div>
-);
-
+/***
 const mapStateToProps = state => ({
   name: authSelectors.getUserName(state),
 });
@@ -20,5 +12,20 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onLogout: authOperations.logOut,
 };
+ */
+export default function UserMenu() {
+  const dispatch = useDispatch();
+  const name = useSelector(authSelectors.getUserName);
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserMenu);
+  const onLogOut = useCallback(() =>{ 
+    dispatch(authOperations.logOut());
+}, [dispatch]);
+  
+  return (
+    <div className={styles.container}>
+      <span className={styles.name}>Welcome, {name}</span>
+      <Button className={styles.button} variant="outline-secondary" onClick={onLogOut}>
+        <FiLogOut className={styles.svg} fill="white" /></Button>{''}
+    </div>
+  );
+};

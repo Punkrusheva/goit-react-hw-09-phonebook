@@ -1,15 +1,25 @@
-//import { useState } from 'react';
-import React from 'react';
+import React, {useCallback} from 'react';
 import styles from './ContactFilter.module.css';
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { contactsSelectors, contactsActions } from "../../redux/phoneBook";
 
-/*export default function ContactFilter() {
-  const [name, setName] = useState('');
-}*/
+/**const mapStateToProps = (state) => ({
+  value: contactsSelectors.getFilter(state)
+})
 
-const ContactFilter = ({ value, onChange }) => (
-          <label
+const mapDispatchToProps = dispatch => ({
+  onChange: e => dispatch(contactsActions.changeFilter(e.target.value)),
+});
+ */
+
+export default function ContactFilter() {
+  const dispatch = useDispatch();
+  const value = useSelector(contactsSelectors.getFilter);
+  
+  const onChange = useCallback( e => dispatch(contactsActions.changeFilter(e.target.value)), [dispatch]);
+
+  return(
+   <label
             className={styles.label}>
           <input
                 type='text'
@@ -20,14 +30,5 @@ const ContactFilter = ({ value, onChange }) => (
                 placeholder='Enter contact name'
             />
         </label>
-);
-
-const mapStateToProps = (state) => ({
-  value: contactsSelectors.getFilter(state)
-})
-
-const mapDispatchToProps = dispatch => ({
-  onChange: e => dispatch(contactsActions.changeFilter(e.target.value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactFilter);
+  )
+};

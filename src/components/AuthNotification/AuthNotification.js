@@ -1,12 +1,10 @@
-import React, { Component } from "react";
-import { connect } from 'react-redux';
+import React, { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { authSelectors, authActions } from '../../redux/auth';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-class AuthNotification extends Component {
-   
-    componentDidMount() {
+/*componentDidMount() {
         if (this.props.error) {
             toast.error(`${this.props.error}`);
             setTimeout(() => {
@@ -14,22 +12,30 @@ class AuthNotification extends Component {
             }, 2500);
         };
     };
-
-    render() {
-
-        return (
-            <>
-          </>
-        );
-    };
-};
-
-const mapStateToProps = (state) => ({
+  
+  const mapStateToProps = (state) => ({
     error: authSelectors.getAuthError(state),
 });
 
 const mapDispatchToProps = dispatch => ({
     clearError: () => dispatch(authActions.clearAuthError())
-});
+});*/
+export default function AuthNotification() {
+    const dispatch = useDispatch();
+    const error = useSelector(authSelectors.getAuthError);
+    const clearError = useCallback(()=> dispatch(authActions.clearAuthError()),[dispatch]);
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthNotification);
+    useEffect(() => {
+         if (error) {
+            toast.error(`${error}`);
+            setTimeout(() => {
+                clearError();
+            }, 2500);
+        };
+     }, [error, clearError]);
+    
+        return (
+            <>
+          </>
+        );
+    };
