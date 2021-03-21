@@ -51,10 +51,8 @@ export default function Register() {
         if (password.length < 7) { toast.error('Проверьте пароль, не меньше 7 символов'); }
         else {
             dispatch(authOperations.register({ name, email, password }));
-           // console.log({ name: `${name}`, email: `${email}`, password: `${password}`});
-           // onRegister({ name: `${name}`, email: `${email}`, password: `${password}`});
             };
-           // reset();
+         reset();
     };
     
     const reset = () => {

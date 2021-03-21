@@ -46,7 +46,7 @@ export default function Login() {
                 console.log(email, password);
                 dispatch(authOperations.logIn({ email, password }));
             };
-            //reset();
+            reset();
         };
     };
     
