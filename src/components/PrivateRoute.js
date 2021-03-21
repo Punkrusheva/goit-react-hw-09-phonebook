@@ -13,16 +13,14 @@ const mapStateToProps = state => ({
 });
 */
 export default function PrivateRoute({
-  component: Component,
   redirectTo,
+  children,
   ...routeProps
 }) {
   const isAuthenticated = useSelector(authSelectors.getIsAuthenticated);
   return (
-    <Route
-      {...routeProps}
-      render={props =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to={redirectTo} />
-      }
-    />)
+    <Route {...routeProps}>
+      {isAuthenticated ? children : <Redirect to={redirectTo} />
+      }</Route>
+  );
 };

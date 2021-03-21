@@ -43,7 +43,6 @@ export default function Login() {
         else {
             if (password.length < 7) { toast.error('Проверьте пароль, не меньше 7 символов'); }
             else {
-                console.log(email, password);
                 dispatch(authOperations.logIn({ email, password }));
             };
             reset();

@@ -2,14 +2,13 @@ import {
     useState
 } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { contactsOperations } from "../../redux/phoneBook/index";
+import { contactsOperations, contactsSelectors } from "../../redux/phoneBook/index";
 import shortid from 'shortid';
 import styles from './ContactForm.module.css';
 import { CSSTransition } from "react-transition-group";
 import "../../stylesheets/animation.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import contactsSelectors from "../../redux/phoneBook/phoneBook-selectors";
 /*
 const mapStateToProps = state => ({ contacts: contactsSelectors.getVisibleContacts(state)});
 
@@ -18,15 +17,15 @@ const mapDispatchToProps = dispatch => ({
 });*/
 
 export default function ContactForm() {
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   
   const nameInputId = shortid.generate();
   const numberInputId = shortid.generate();
 
-  const dispatch = useDispatch();
   const contacts = useSelector(contactsSelectors.getVisibleContacts);
-  const onSubmit = () => { dispatch(contactsOperations.addContact())};
+  //const onSubmit = () => { dispatch(contactsOperations.addContact())};
   
   const handleChange = e => {
     const { name, value } = e.target;
@@ -47,15 +46,14 @@ export default function ContactForm() {
   
   const handleSubmit = e => {
     e.preventDefault();
-    
     if (name === '') {toast.error('Contact details empty')
     }
-    if (contacts.items.find(({ name }) => name === contacts.items.name)) {
+    if (contacts.find(contact => name === contact.name)) {
         toast.error('Contact is already exist');
     } 
     else {
-      console.log(name, number);
-      onSubmit(name, number);
+      
+      dispatch(contactsOperations.addContact({name, number}));
       };
       reset();
   };

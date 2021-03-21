@@ -12,22 +12,17 @@ import { authSelectors } from '../redux/auth';
 });
 */
 export default function PublicRoute({
-  component: Component,
   redirectTo,
-  //children,
+  children,
   ...routeProps
 }) {
   const isAuthenticated = useSelector(authSelectors.getIsAuthenticated);
   return (
-    <Route
-      {...routeProps}
-      render={props =>
-        isAuthenticated && routeProps.restricted ? (
+    <Route {...routeProps}>
+      {isAuthenticated && routeProps.restricted ? (
           <Redirect to={redirectTo} />
-        ) : (
-          <Component {...props} />
-        )
-      }
-    />
+    ) : (
+      children)
+    }</Route>
   );
 };

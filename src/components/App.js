@@ -48,22 +48,31 @@ export default function App() {
                         timeout={6000}
                     />}>
           <Switch>
-             <PublicRoute exact path={routes.homePage} component={HomePage}/>
+            <PublicRoute exact path={routes.homePage}>
+              <HomePage />
+            </PublicRoute>
           
             <PrivateRoute
               path={routes.phoneBook}
-              component={PhoneBook}
-              redirectTo={routes.homePage}/>
+              redirectTo={routes.homePage}>
+              <PhoneBook />
+            </PrivateRoute>
+              
+              
             <PublicRoute
               path={routes.register}
               restricted
-              redirectTo={routes.phoneBook}
-              component={Register} />
+              redirectTo={routes.phoneBook}>
+              <Register/>
+            </PublicRoute>
+            
             <PublicRoute
               path={routes.login}
               restricted
-              redirectTo={routes.phoneBook}
-              component={Login} />
+              redirectTo={routes.phoneBook}>
+              <Login/>
+            </PublicRoute>
+            
             <Redirect to={routes.homePage}/>
           </Switch>
         </Suspense>

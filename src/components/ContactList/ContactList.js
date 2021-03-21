@@ -20,13 +20,12 @@ const mapDispatchToProps = dispatch => ({
 export default function ContactList() {
   const dispatch = useDispatch();
   const contacts = useSelector(contactsSelectors.getVisibleContacts);
-  const onRemoveContact = () => dispatch(contactsOperations.deleteContact());
   return (<>
     {contacts.length > 0 &&     
     <TransitionGroup component="ul" className={styles.contactList}>
       {contacts.map(({ name, id, number }) => (
         <CSSTransition key={id} timeout={250} classNames="item">
-          <ContactListItem name={name} id={id} number={number} onClick={() => onRemoveContact(id)}>
+          <ContactListItem name={name} id={id} number={number} onClick={() => dispatch(contactsOperations.deleteContact(id))}>
           </ContactListItem>
         </CSSTransition>
         
